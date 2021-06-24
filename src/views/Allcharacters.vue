@@ -1,32 +1,38 @@
 <template>
   <div class="characters">
-    <characters-table :charactersArray="characters"/>
+    <characters-table :charactersArray="characters" />
   </div>
 </template>
 
 <script>
 import CharactersTable from '../components/CharactersTable.vue';
 import axios from "axios";
+import { mapState } from 'vuex';
 
 export default {
   components: { CharactersTable },
   data() {
     return {
       characters: [],
-      pages: 1
+      page: 1
     }
   },
   name: 'Characters',
-  async mounted(){
-
-    console.log(this.$store.state.search);
-
-    const data = (await axios({
+  computed: mapState(['search']),
+  watch: {
+    search(newValue, oldValue) {
+      this.getData();
+    }
+  },
+  methods: {
+    async getData() {
+      console.log(this.$store.state.search);
+       const data = (await axios({
       url: 'https://rickandmortyapi.com/graphql',
       method: 'post',
       data: {
         query: `query {
-                  characters(page: ${this.pages}, ${this.$store.state.search ? `filter: { name: "${this.$store.state.search}" }`:``}) {
+                  characters(page: ${this.page}, ${this.$store.state.search ? `filter: { name: "${this.$store.state.search}" }`:``}) {
                     info {
                       count
                       pages
@@ -49,9 +55,12 @@ export default {
 }`
       }
     })).data.data.characters;
-
+    console.log(data);
     this.characters = data.results;
-    this.pages = data.info.pages;
+    }
+  },
+  async mounted(){
+    this.getData();
   }
 };
 </script>
