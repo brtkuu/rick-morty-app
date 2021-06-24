@@ -1,6 +1,6 @@
 <template>
   <div class="characters">
-    <characters-table />
+    <characters-table :charactersArray="characters"/>
   </div>
 </template>
 

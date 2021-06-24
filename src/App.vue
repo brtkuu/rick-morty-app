@@ -30,7 +30,7 @@ export default {
   max-width: 1250px;
   margin: auto;
   font-family: 'Poppins', sans-serif;
-  color: black;
+  color: #8c8e90;
 }
 .banner-top{
   &__logo{
