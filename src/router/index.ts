@@ -13,7 +13,7 @@ const routes: Array<RouteConfig> = [
     component: Allcharacters
   },
   {
-    path: "/about",
+    path: "/favorites",
     name: "favorites",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route

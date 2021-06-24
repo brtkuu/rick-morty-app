@@ -1,5 +1,17 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <characters-table />
   </div>
 </template>
+<script>
+import CharactersTable from '../components/CharactersTable.vue';
+
+export default {
+  components: { CharactersTable },
+  name: 'Characters',
+  mounted() {
+    this.$store.state.search = "";
+  }
+};
+</script>
+

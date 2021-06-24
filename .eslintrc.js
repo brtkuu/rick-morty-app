@@ -9,8 +9,6 @@ module.exports = {
   },
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
-    avoidEscape: true,
-    allowTemplateLiterals: true
+    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off"
   }
 };
