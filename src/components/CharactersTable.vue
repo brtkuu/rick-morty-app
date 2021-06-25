@@ -1,5 +1,7 @@
 <template>
-    <div>
+  <section>
+    <loading class="characters__loading" v-if="!charactersArray.length" />
+    <div v-if="charactersArray.length" class="characters__container">
         <div class="characters__row characters__top-info">
             <div class="characters__table-info">Photo</div>
             <div class="characters__table-info">Character ID</div>
@@ -10,29 +12,50 @@
             <div class="characters__table-info">Add To Favorites</div>
         </div>
         <div class="characters__row" v-for="item in $props.charactersArray" :key="item.id">
-            <div class="characters__table-info"><img class="characters__table-image" :src="item.image" /></div>
-            <div class="characters__table-info">{{item.id}}</div>
-            <div class="characters__table-info">{{item.name}}</div>
-            <div class="characters__table-info">{{item.gender}}</div>
-            <div class="characters__table-info">{{item.species}}</div>
+            <div class="characters__table-info"><img :class="{dead: item.status === 'Dead', 'characters__table-image': true}" :src="item.image" /><img class="characters__table-image-dead" v-if="item.status === 'Dead'" src="../assets/ribbon.png" /></div>
+            <div class="characters__table-info">{{ item.id }}</div>
+            <div class="characters__table-info">{{ item.name }}</div>
+            <div class="characters__table-info">{{ item.gender }}</div>
+            <div class="characters__table-info">{{ item.species }}</div>
             <div class="characters__table-info">Last Episode</div>
-            <div class="characters__table-info"><i :class="{star: true}"></i></div>
+            <div class="characters__table-info"><i @click="addToFavorites(item.id)" :class="{star: true}"></i></div>
         </div>
     </div>
+  </section>
 </template>
 
 <script>
+import Loading from './Loading.vue';
 export default {
+    components: { Loading },
   name: 'Allcharacters',
   props: {charactersArray: Array},
   created() {
       console.log(this.$props.charactersArray);
+  },
+  methods: {
+    
+    addToFavorites(id) {
+      if(!localStorage.favorites){
+        localStorage.setItem("favorites", id + ",");
+      } else {
+        if(!localStorage.favorites.includes(id)){
+          localStorage.favorites += `${id},`; 
+        }
+      }
+    }
   }
 };
 </script>
 <style lang="scss">
   .characters{
-
+    &__loading {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    &__container{
+      min-height: 70vh;
+    }
     &__row{
       min-height: 40px;
       margin-top: 2px;
@@ -42,6 +65,7 @@ export default {
       border-bottom: 1px solid #E5EAF4;
     }
     &__table-info{
+       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -50,6 +74,13 @@ export default {
         width: 43px;
         height: 68px;
         padding: 5px;
+        &-dead{
+          position: absolute;
+          height: 20px;
+          width: 20px;
+          top:0%;
+          left: 58%;
+        }
     }
     &__table-favorite{
         height: 43px;
@@ -109,5 +140,8 @@ export default {
     &:before, &:after {
         border-bottom: .7em  solid #11B0C8;
     }
+}
+.dead{
+  filter: grayscale(100%);
 }
 </style>

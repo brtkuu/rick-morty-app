@@ -1,6 +1,9 @@
 <template>
   <div class="characters">
     <characters-table :charactersArray="characters" />
+    <select class="characters__select" @change="changePage">
+      <option v-for="(item, index) in allPages" :key="index+1">{{index+1}}</option>
+    </select>
   </div>
 </template>
 
@@ -14,19 +17,25 @@ export default {
   data() {
     return {
       characters: [],
-      page: 1
+      page: 1,
+      allPages: 0
     }
   },
   name: 'Characters',
   computed: mapState(['search']),
   watch: {
     search(newValue, oldValue) {
+      this.page = 1;
       this.getData();
     }
   },
   methods: {
+    async changePage(event) {
+      console.log(event.target.value);
+      this.page = event.target.value;
+      await this.getData();
+    },
     async getData() {
-      console.log(this.$store.state.search);
        const data = (await axios({
       url: 'https://rickandmortyapi.com/graphql',
       method: 'post',
@@ -55,8 +64,8 @@ export default {
 }`
       }
     })).data.data.characters;
-    console.log(data);
     this.characters = data.results;
+    this.allPages = data.info.pages;
     }
   },
   async mounted(){
@@ -64,3 +73,19 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+  .characters{ 
+    &__select{
+      width: 60px;
+      font-size: 20px;
+      background: none;
+      border: none;
+      color: #11B0C8;
+      margin: 10px 30px;
+    }
+    &__select:hover{
+      filter: brightness(0.7);
+      cursor: pointer;
+    }
+  }
+</style>
