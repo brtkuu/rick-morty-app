@@ -53,6 +53,9 @@ export default {
                       gender
                       species
                       image
+                      episode {
+                        episode
+                      }
                     }
                   }
                   location(id: 1) {

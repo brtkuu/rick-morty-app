@@ -15,9 +15,9 @@
             <div class="characters__table-info"><img :class="{dead: item.status === 'Dead', 'characters__table-image': true}" :src="item.image" /><img class="characters__table-image-dead" v-if="item.status === 'Dead'" src="../assets/ribbon.png" /></div>
             <div class="characters__table-info">{{ item.id }}</div>
             <div class="characters__table-info">{{ item.name }}</div>
-            <div class="characters__table-info">{{ item.gender }}</div>
+            <div class="characters__table-info"><img class="characters__gender-img" :src="getGenderImg(item.gender)" alt="" />{{ item.gender }}</div>
             <div class="characters__table-info">{{ item.species }}</div>
-            <div class="characters__table-info">Last Episode</div>
+            <div class="characters__table-info">{{item.episode[item.episode.length -1].episode}}</div>
             <div class="characters__table-info"><i @click="addToFavorites(item.id)" :class="{star: true}"></i></div>
         </div>
     </div>
@@ -34,7 +34,20 @@ export default {
       console.log(this.$props.charactersArray);
   },
   methods: {
-    
+    getGenderImg(gender) {
+
+      if(gender === 'Male'){
+        return require('../assets/male.png');
+      } 
+      if(gender === 'Female'){
+        return require('../assets/female.png');
+      }
+      if(gender === 'Unknown'){
+        return require('../assets/unknown.png');
+        
+      }
+      return require('../assets/genderless.png');
+    },
     addToFavorites(id) {
       if(!localStorage.favorites){
         localStorage.setItem("favorites", id + ",");
@@ -68,7 +81,8 @@ export default {
        position: relative;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: start;
+      margin-left: 15px;
     }
     &__table-image{
         width: 43px;
@@ -79,7 +93,7 @@ export default {
           height: 20px;
           width: 20px;
           top:0%;
-          left: 58%;
+          left: 43px;
         }
     }
     &__table-favorite{
@@ -93,6 +107,11 @@ export default {
     &__top-info {
         margin-top: 18px;
         background-color: #E5EAF4;
+    }
+    &__gender-img{
+      height: 24px;
+      width: 24px;
+      margin-right: 10px;
     }
   }
   .star {
