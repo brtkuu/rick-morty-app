@@ -1,24 +1,14 @@
-# rick_morty
+# Rick & Morty Universe Application
 
-## Project setup
-```
-yarn install
-```
+## Technologies
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+-   Vue
+-   TypeScript
+-   Vuex
+-   Axios
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## Application
 
-### Lints and fixes files
-```
-yarn lint
-```
+App allow you to search your favorites characters from Rick & Morty. You can check gender, species of character or last episode in which this character appeared, also you can add store your favorites characters.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Bartosz Posert
