@@ -18,7 +18,7 @@
             <div class="characters__table-info"><img class="characters__gender-img" :src="getGenderImg(item.gender)" alt="" />{{ item.gender }}</div>
             <div class="characters__table-info">{{ item.species }}</div>
             <div class="characters__table-info">{{item.episode[item.episode.length -1].episode}}</div>
-            <div class="characters__table-info"><i @click="addToFavorites(item.id)" :class="{star: true}"></i></div>
+            <div class="characters__table-info"><i @click="toggleFavorites(item.id)" :class="{star: true, favorite__selected: favorites.includes(`${item.id},`)}"></i></div>
         </div>
     </div>
   </section>
@@ -31,7 +31,13 @@ export default {
   name: 'Allcharacters',
   props: {charactersArray: Array},
   created() {
-      console.log(this.$props.charactersArray);
+    this.favorites = localStorage.favorites;
+    console.log(localStorage.favorites);
+  },
+  data() {
+    return {
+      favorites: "",
+    }
   },
   methods: {
     getGenderImg(gender) {
@@ -48,14 +54,17 @@ export default {
       }
       return require('../assets/genderless.png');
     },
-    addToFavorites(id) {
+    toggleFavorites(id) {
       if(!localStorage.favorites){
-        localStorage.setItem("favorites", id + ",");
+        localStorage.setItem("favorites", `${id},`);
       } else {
-        if(!localStorage.favorites.includes(id)){
+        if(!localStorage.favorites.includes(`${id},`)){
           localStorage.favorites += `${id},`; 
+        } else {
+         localStorage.favorites = localStorage.favorites.replace(`${id},`, "");
         }
       }
+      this.favorites = localStorage.favorites;
     }
   }
 };
@@ -126,7 +135,7 @@ export default {
   margin-bottom: 1.2em;
   
   border-right:  .3em solid transparent;
-  border-bottom: .7em  solid rgb(223, 223, 223);
+  border-bottom: .7em  solid rgb(194, 194, 194);
   border-left:   .3em solid transparent;
 
   /* Controlls the size of the stars. */
@@ -144,7 +153,7 @@ export default {
     left: -1em;
   
     border-right:  1em solid transparent;
-    border-bottom: .7em  solid rgb(223, 223, 223);
+    border-bottom: .7em  solid rgb(194, 194, 194);
     border-left:   1em solid transparent;
   
     transform: rotate(-35deg);
@@ -155,6 +164,8 @@ export default {
   }
 }
 .star:hover{
+  cursor: pointer;
+    cursor: pointer;
     border-bottom: .7em  solid #11B0C8;
     &:before, &:after {
         border-bottom: .7em  solid #11B0C8;
@@ -162,5 +173,18 @@ export default {
 }
 .dead{
   filter: grayscale(100%);
+}
+.favorite__selected{
+  border-bottom: .7em  solid #11B0C8;
+    &:before, &:after {
+        border-bottom: .7em  solid #11B0C8;
+    }
+}
+.favorite__selected:hover{
+  cursor: pointer;
+  border-bottom: .7em  solid rgb(194, 194, 194);
+    &:before, &:after {
+        border-bottom: .7em  solid rgb(194, 194, 194);
+    }
 }
 </style>
